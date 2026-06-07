@@ -19,11 +19,11 @@ namespace GymManagement.DataAccess.Repositories
                 .FirstOrDefaultAsync(m => m.Email == email);
         }
 
-        // Get member with their membership loaded
+        // Get member with their memberships loaded
         public async Task<Member?> GetByIdWithDetailsAsync(int id)
         {
             return await _context.Members
-                .Include(m => m.Membership)
+                .Include(m => m.Memberships)  // plural — it's a collection
                 .Include(m => m.Enrollments)
                     .ThenInclude(e => e.GymClass)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -33,7 +33,7 @@ namespace GymManagement.DataAccess.Repositories
         public async Task<IEnumerable<Member>> GetAllWithDetailsAsync()
         {
             return await _context.Members
-                .Include(m => m.Membership)
+                .Include(m => m.Memberships)  // plural — it's a collection
                 .ToListAsync();
         }
     }
